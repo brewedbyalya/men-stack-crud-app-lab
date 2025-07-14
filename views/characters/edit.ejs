@@ -1,0 +1,158 @@
+<%- include('../partials/header') %>
+
+<div class="edit-character-container">
+  <h1>Edit <%= character.name %></h1>
+  
+  <form action="/characters/<%= character._id %>?_method=PUT" method="POST" class="character-form">
+    
+    <div class="form-section">
+      <h2 class="section-title">Basic Information</h2>
+      
+      <div class="form-group">
+        <label for="name">Full Name*</label>
+        <input type="text" id="name" name="name" value="<%= character.name %>" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="nickname">Nickname/Alias</label>
+        <input type="text" id="nickname" name="nickname" value="<%= character.nickname || '' %>">
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="age">Age</label>
+          <input type="number" id="age" name="age" min="0" value="<%= character.age || '' %>">
+        </div>
+        
+        <div class="form-group">
+          <label for="gender">Gender</label>
+          <input type="text" id="gender" name="gender" value="<%= character.gender || '' %>">
+        </div>
+        
+        <div class="form-group">
+          <label for="species">Species/Race</label>
+          <input type="text" id="species" name="species" value="<%= character.species || '' %>">
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="occupation">Occupation/Title</label>
+        <input type="text" id="occupation" name="occupation" value="<%= character.occupation || '' %>">
+      </div>
+    </div>
+    
+    <div class="form-section">
+      <h2 class="section-title">Physical Appearance</h2>
+      <div class="form-group">
+        <label for="appearance">Description</label>
+        <textarea id="appearance" name="appearance" rows="4"><%= character.appearance || '' %></textarea>
+      </div>
+    </div>
+    
+    <div class="form-section">
+      <h2 class="section-title">Personality & Background</h2>
+      
+      <div class="form-group">
+        <label for="personality">Personality Traits</label>
+        <textarea id="personality" name="personality" rows="4"><%= character.personality || '' %></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label for="backstory">Backstory</label>
+        <textarea id="backstory" name="backstory" rows="4"><%= character.backstory || '' %></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label for="motivations">Motivations/Goals</label>
+        <textarea id="motivations" name="motivations" rows="3"><%= character.motivations || '' %></textarea>
+      </div>
+    </div>
+    
+    <div class="form-section">
+      <h2 class="section-title">Abilities & Flaws</h2>
+      
+      <div class="form-group">
+        <label for="skills">Skills/Abilities (comma separated)</label>
+        <input type="text" id="skills" name="skills" value="<%= character.skills ? character.skills.join(', ') : '' %>">
+      </div>
+      
+      <div class="form-group">
+        <label for="weaknesses">Weaknesses/Fears (comma separated)</label>
+        <input type="text" id="weaknesses" name="weaknesses" value="<%= character.weaknesses ? character.weaknesses.join(', ') : '' %>">
+      </div>
+    </div>
+    
+    <div class="form-section">
+      <h2 class="section-title">Story Role</h2>
+      
+      <div class="form-group">
+        <label for="storyRole">Role in Story</label>
+        <select id="storyRole" name="storyRole">
+          <option value="">Select a role...</option>
+          <option value="Protagonist" <%= character.storyRole === 'Protagonist' ? 'selected' : '' %>>Protagonist</option>
+          <option value="Antagonist" <%= character.storyRole === 'Antagonist' ? 'selected' : '' %>>Antagonist</option>
+          <option value="Supporting" <%= character.storyRole === 'Supporting' ? 'selected' : '' %>>Supporting Character</option>
+          <option value="Minor" <%= character.storyRole === 'Minor' ? 'selected' : '' %>>Minor Character</option>
+          <option value="Neutral" <%= character.storyRole === 'Neutral' ? 'selected' : '' %>>Neutral Character</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="quotes">Memorable Quotes (one per line)</label>
+        <textarea id="quotes" name="quotes" rows="3"><%= character.quotes ? character.quotes.join('\n') : '' %></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label for="notes">Additional Notes</label>
+        <textarea id="notes" name="notes" rows="3"><%= character.notes || '' %></textarea>
+      </div>
+    </div>
+    
+    <div class="form-section">
+      <h2 class="section-title">Relationships</h2>
+      
+      <div id="relationships-container">
+        <% character.relationships.forEach((rel, index) => { %>
+          <div class="relationship-form" data-index="<%= index %>">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Character</label>
+                <select name="relationships[<%= index %>][character]">
+                  <option value="">Select a character...</option>
+                  <% allCharacters.forEach(otherChar => { %>
+                    <option value="<%= otherChar._id %>" 
+                      <%= rel.character && rel.character.equals(otherChar._id) ? 'selected' : '' %>>
+                      <%= otherChar.name %>
+                    </option>
+                  <% }); %>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label>Relationship Type</label>
+                <input type="text" name="relationships[<%= index %>][relationshipType]" 
+                  value="<%= rel.relationshipType || '' %>" placeholder="Friend, Enemy, Sibling, etc.">
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label>Description</label>
+              <textarea name="relationships[<%= index %>][description]" rows="2"><%= rel.description || '' %></textarea>
+            </div>
+            
+            <button type="button" class="btn btn-remove-relationship" data-index="<%= index %>">Remove Relationship</button>
+          </div>
+        <% }); %>
+      </div>
+      
+      <button type="button" id="add-relationship" class="btn btn-add">+ Add Relationship</button>
+    </div>
+    
+    <div class="form-actions">
+      <button type="submit" class="btn btn-save">Save Changes</button>
+      <a href="/characters/<%= character._id %>" class="btn btn-cancel">Cancel</a>
+    </div>
+  </form>
+</div>
+
+<%- include('../partials/footer') %>

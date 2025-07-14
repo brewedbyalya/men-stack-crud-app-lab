@@ -1,0 +1,78 @@
+<%- include('../partials/header') %>
+
+<div class="characters-index">
+  <div class="index-header">
+    <h1>Character Dictionary</h1>
+    
+    <div class="controls">
+      <a href="/characters/new" class="btn btn-new">+ New Character</a>
+      
+      <div class="search-filter">
+        <form action="/characters" method="GET" class="search-form">
+          <input type="text" name="search" placeholder="Search characters..." value="<%= searchQuery || '' %>">
+          <button type="submit" class="btn btn-search">Search</button>
+        </form>
+        
+        <div class="filter-dropdown">
+          <select id="role-filter" class="filter-select">
+            <option value="">All Roles</option>
+            <option value="Protagonist" <%= roleFilter === 'Protagonist' ? 'selected' : '' %>>Protagonists</option>
+            <option value="Antagonist" <%= roleFilter === 'Antagonist' ? 'selected' : '' %>>Antagonists</option>
+            <option value="Supporting" <%= roleFilter === 'Supporting' ? 'selected' : '' %>>Supporting</option>
+            <option value="Minor" <%= roleFilter === 'Minor' ? 'selected' : '' %>>Minor</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% if (characters.length === 0) { %>
+    <div class="empty-state">
+      <% if (searchQuery || roleFilter) { %>
+        <p>No characters match your search criteria.</p>
+        <a href="/characters" class="btn btn-clear">Clear filters</a>
+      <% } else { %>
+        <p>No characters found. Create your first character!</p>
+        <a href="/characters/new" class="btn btn-new">Create Character</a>
+      <% } %>
+    </div>
+  <% } else { %>
+    <div class="character-grid">
+      <% characters.forEach(character => { %>
+        <div class="character-card role-<%= character.storyRole ? character.storyRole.toLowerCase() : 'none' %>">
+          <div class="card-header">
+            <h2><a href="/characters/<%= character._id %>"><%= character.name %></a></h2>
+            <% if (character.nickname) { %>
+              <p class="nickname">"<%= character.nickname %>"</p>
+            <% } %>
+          </div>
+          
+          <div class="card-meta">
+            <% if (character.species) { %>
+              <span class="meta-item"><%= character.species %></span>
+            <% } %>
+            <% if (character.age) { %>
+              <span class="meta-item"><%= character.age %> years</span>
+            <% } %>
+            <% if (character.storyRole) { %>
+              <span class="meta-item role-tag"><%= character.storyRole %></span>
+            <% } %>
+          </div>
+          
+          <% if (character.personality) { %>
+            <div class="card-preview">
+              <p class="truncate"><%= character.personality.substring(0, 100) %><%= character.personality.length > 100 ? '...' : '' %></p>
+            </div>
+          <% } %>
+          
+          <div class="card-actions">
+            <a href="/characters/<%= character._id %>" class="btn btn-view">View</a>
+            <a href="/characters/<%= character._id %>/edit" class="btn btn-edit">Edit</a>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>

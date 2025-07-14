@@ -1,0 +1,155 @@
+<%- include('../partials/header') %>
+
+<div class="character-show">
+  <div class="character-header">
+    <h1><%= character.name %></h1>
+    <% if (character.nickname) { %>
+      <h3 class="nickname">"<%= character.nickname %>"</h3>
+    <% } %>
+    
+    <div class="character-meta">
+      <% if (character.age) { %>
+        <span class="meta-item"><strong>Age:</strong> <%= character.age %></span>
+      <% } %>
+      <% if (character.gender) { %>
+        <span class="meta-item"><strong>Gender:</strong> <%= character.gender %></span>
+      <% } %>
+      <% if (character.species) { %>
+        <span class="meta-item"><strong>Species:</strong> <%= character.species %></span>
+      <% } %>
+      <% if (character.occupation) { %>
+        <span class="meta-item"><strong>Occupation:</strong> <%= character.occupation %></span>
+      <% } %>
+      <% if (character.storyRole) { %>
+        <span class="meta-item role-<%= character.storyRole.toLowerCase() %>">
+          <strong>Role:</strong> <%= character.storyRole %>
+        </span>
+      <% } %>
+    </div>
+  </div>
+
+  <div class="character-details">
+
+    <% if (character.appearance) { %>
+    <div class="detail-section">
+      <h2 class="section-title">Appearance</h2>
+      <div class="section-content">
+        <%= character.appearance.replace(/\n/g, '<br>') %>
+      </div>
+    </div>
+    <% } %>
+
+    <% if (character.personality) { %>
+    <div class="detail-section">
+      <h2 class="section-title">Personality</h2>
+      <div class="section-content">
+        <%= character.personality.replace(/\n/g, '<br>') %>
+      </div>
+    </div>
+    <% } %>
+
+    <% if (character.backstory) { %>
+    <div class="detail-section">
+      <h2 class="section-title">Backstory</h2>
+      <div class="section-content">
+        <%= character.backstory.replace(/\n/g, '<br>') %>
+      </div>
+    </div>
+    <% } %>
+
+    <% if (character.motivations) { %>
+    <div class="detail-section">
+      <h2 class="section-title">Motivations</h2>
+      <div class="section-content">
+        <%= character.motivations.replace(/\n/g, '<br>') %>
+      </div>
+    </div>
+    <% } %>
+
+    <% if (character.skills?.length > 0 || character.weaknesses?.length > 0) { %>
+    <div class="detail-section">
+      <h2 class="section-title">Abilities & Flaws</h2>
+      <div class="traits-container">
+        <% if (character.skills?.length > 0) { %>
+        <div class="trait-list">
+          <h3>Skills/Strengths</h3>
+          <ul>
+            <% character.skills.forEach(skill => { %>
+              <li><%= skill %></li>
+            <% }); %>
+          </ul>
+        </div>
+        <% } %>
+        
+        <% if (character.weaknesses?.length > 0) { %>
+        <div class="trait-list">
+          <h3>Weaknesses/Fears</h3>
+          <ul>
+            <% character.weaknesses.forEach(weakness => { %>
+              <li><%= weakness %></li>
+            <% }); %>
+          </ul>
+        </div>
+        <% } %>
+      </div>
+    </div>
+    <% } %>
+
+    <% if (character.relationships?.length > 0) { %>
+    <div class="detail-section">
+      <h2 class="section-title">Relationships</h2>
+      <div class="relationships-grid">
+        <% character.relationships.forEach(rel => { %>
+          <div class="relationship-card">
+            <h3>
+              <% if (rel.character) { %>
+                <a href="/characters/<%= rel.character._id %>"><%= rel.character.name %></a>
+              <% } else { %>
+                [Deleted Character]
+              <% } %>
+            </h3>
+            <% if (rel.relationshipType) { %>
+              <p class="relationship-type"><%= rel.relationshipType %></p>
+            <% } %>
+            <% if (rel.description) { %>
+              <p class="relationship-desc"><%= rel.description %></p>
+            <% } %>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+    <% } %>
+
+    <% if (character.quotes?.length > 0) { %>
+    <div class="detail-section">
+      <h2 class="section-title">Memorable Quotes</h2>
+      <div class="quotes-container">
+        <% character.quotes.forEach(quote => { %>
+          <blockquote class="character-quote">
+            "<%= quote %>"
+          </blockquote>
+        <% }); %>
+      </div>
+    </div>
+    <% } %>
+
+    <% if (character.notes) { %>
+    <div class="detail-section">
+      <h2 class="section-title">Writer's Notes</h2>
+      <div class="section-content notes">
+        <%= character.notes.replace(/\n/g, '<br>') %>
+      </div>
+    </div>
+    <% } %>
+  </div>
+
+  <div class="character-actions">
+    <a href="/characters/<%= character._id %>/edit" class="btn btn-edit">Edit Character</a>
+    <form action="/characters/<%= character._id %>?_method=DELETE" method="POST" class="delete-form">
+      <button type="submit" class="btn btn-delete">Delete Character</button>
+    </form>
+    <a href="/characters" class="btn btn-back">Back to All Characters</a>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,9 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const morgan = require('morgan')
+const morgan = require('morgan');
 const methodOverride = require('method-override');
-const Character = require('./models/character');
 
 const app = express();
 
@@ -12,8 +11,7 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static('public'));
-
-app.use(morgan('dev')) 
+app.use(morgan('dev'));
 
 // Database connection
 mongoose.connect(process.env.MONGODB_URI)
@@ -25,12 +23,15 @@ app.get('/', (req, res) => {
   res.redirect('/characters');
 });
 
-// Character routes
 const characterRoutes = require('./routes/characters');
 app.use('/characters', characterRoutes);
 
+// error handler cuz im losing my mind trying to figure out what the problem is
+app.use((req, res) => {
+  res.status(404).send('Page not found');
+});
+
 // Server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(3000, () => {
+  console.log('Listening on port 3000');
 });

@@ -107,12 +107,12 @@ header {
   border: none;
 }
 
-.btn-new, .btn-save, .btn-add {
+.btn-new, .btn-save, .btn-add, .btn-clear {
   background-color: #61C9A8;
   color: #3A2E26;
 }
 
-.btn-new:hover, .btn-save:hover, .btn-add:hover {
+.btn-new:hover, .btn-save:hover, .btn-add:hover, .btn-clear:hover {
   background-color: #4AB897;
   transform: translateY(-2px);
 }

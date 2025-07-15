@@ -117,12 +117,12 @@ header {
   transform: translateY(-2px);
 }
 
-.btn-edit {
+.btn-edit, .btn-view {
   background-color: #AA8F66;
   color: white;
 }
 
-.btn-edit:hover {
+.btn-edit:hover, .btn-view:hover {
   background-color: #957A52;
   transform: translateY(-2px);
 }
@@ -207,7 +207,7 @@ input[type="number"],
 select,
 textarea {
   border: 1px solid #AA8F66;
-  background-color: #FFEEDB;
+  background-color: #e9e7e7;
   width: 100%;
   padding: 0.75rem;
   border-radius: 4px;
@@ -476,6 +476,8 @@ textarea {
 footer {
   background-color: hsl(24, 21%, 19%);
   color: #FFEEDB; 
+  display: flex;
+  align-items: center;
 }
 
 .text-center {
@@ -504,7 +506,7 @@ footer {
     width: 100%;
     flex-direction: column;
   }
-  
+
   .search-form {
     width: 100%;
   }

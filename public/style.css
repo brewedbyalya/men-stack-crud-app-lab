@@ -134,6 +134,7 @@ header {
 
 .btn-delete:hover {
   background-color: #A32A35;
+  color: #4AB897;
   transform: translateY(-2px);
 }
 
@@ -144,6 +145,7 @@ header {
 
 .btn-cancel:hover, .btn-back:hover, .btn-search:hover {
   background-color: #d58a3a;
+  color: #000504;
   transform: translateY(-2px);
 }
 

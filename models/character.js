@@ -4,7 +4,7 @@ const characterSchema = new mongoose.Schema({
   name: { type: String, required: true },
   nickname: String,
   age: Number,
-  gender: String,
+  gender:String,
   species: String,
   occupation: String,
   appearance: String,
